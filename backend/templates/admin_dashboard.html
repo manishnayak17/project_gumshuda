@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | GUMSHUDA Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Design Guidelines Color Palette Variables */
+        :root {
+            --primary-navy: #001F4D;
+            --secondary-gold: #C9A44C;
+            --bg-ivory: #FCFCFA;
+            --text-navy: #0A2342;
+            --accent-gold: #D8B56A;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --font-hindi: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-ivory);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Administration Navigation Top Bar Header */
+        header {
+            background-color: var(--primary-navy);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            width: 94%;
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo-circle {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: var(--primary-navy);
+            overflow: hidden;
+            padding: 2px;
+        }
+
+        .brand-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            border-radius: 50%;
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+
+        .brand-text h1 span {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .brand-text p {
+            font-size: 0.7rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        .admin-badge {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: #d9534f;
+            border-color: #d9534f;
+        }
+
+        /* Layout Architecture Split View Grid */
+        .dashboard-wrapper {
+            width: 94%;
+            max-width: 1400px;
+            margin: 25px auto;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 25px;
+            min-width: 0;
+        }
+
+        /* Left Hand Control Navigation Panel aside */
+        .sidebar-nav {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-top: 4px solid var(--secondary-gold);
+            height: fit-content;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 6px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-navy);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active-link {
+            background-color: var(--primary-navy);
+            color: white;
+        }
+
+        .sidebar-menu a:hover i,
+        .sidebar-menu a.active-link i {
+            color: var(--accent-gold);
+        }
+
+        .sidebar-menu i {
+            color: var(--secondary-gold);
+            width: 20px;
+            font-size: 1.05rem;
+        }
+
+        /* Core Workspace Section */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            min-width: 0;
+            overflow: hidden;
+        }
+
+        /* Global Admin System Analytics Cards Metric Display */
+        .metrics-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border-left: 4px solid var(--primary-navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-card.gold-border {
+            border-left-color: var(--secondary-gold);
+        }
+
+        .metric-card.alert-border {
+            border-left-color: #f0ad4e;
+        }
+
+        .metric-card.success-border {
+            border-left-color: #5cb85c;
+        }
+
+        .metric-info h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #777;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-info p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            color: var(--text-navy);
+        }
+
+        .metric-card i {
+            font-size: 2.2rem;
+            color: rgba(0, 31, 77, 0.08);
+        }
+
+        /* Panels Container Layout Frame workspaces */
+        .workspace-panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            display: none;
+            overflow: hidden;
+            max-width: 100%;
+        }
+
+        .workspace-panel.active-pane {
+            display: block;
+        }
+
+        .workspace-panel h2 {
+            font-size: 1.25rem;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Data Tables Grid Layout Control */
+        .table-controls-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px 14px;
+            align-items: end;
+            margin-bottom: 15px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #eee;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            min-width: 0;
+        }
+
+        .control-group label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-navy);
+            letter-spacing: 0.2px;
+        }
+
+        .table-search-input,
+        .table-search-select {
+            padding: 8px 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 100%;
+            font-size: 0.85rem;
+            outline: none;
+            background-color: white;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .table-search-input:focus,
+        .table-search-select:focus {
+            border-color: var(--primary-navy);
+        }
+
+        .table-search-select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%230A2342' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 8px center;
+            background-size: 14px;
+            padding-right: 30px;
+        }
+
+        /* Clean, readable table presentation without any horizontal scroll */
+        .data-table-container {
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #e8edf3;
+            box-shadow: 0 6px 20px rgba(0, 31, 77, 0.04);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            text-align: left;
+            font-size: 0.9rem;
+            table-layout: auto;
+        }
+
+        thead th {
+            background: linear-gradient(135deg, var(--primary-navy), #173b6c);
+            color: white;
+            padding: 13px 14px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.78rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+        }
+
+        tbody td {
+            padding: 12px 14px;
+            border-bottom: 1px solid #eef2f6;
+            vertical-align: middle;
+            color: var(--text-navy);
+            line-height: 1.45;
+        }
+
+        tbody tr:nth-child(even) td {
+            background-color: #fbfcfe;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        th,
+        td {
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            white-space: normal;
+        }
+
+        tbody tr:hover td {
+            background-color: rgba(201, 164, 76, 0.08);
+        }
+
+        /* Action Buttons Utilities */
+        .data-table-container th:last-child,
+        .data-table-container td:last-child {
+            min-width: 132px;
+        }
+
+        .data-table-container td:last-child {
+            white-space: nowrap;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-view,
+        .btn-delete,
+        .btn-activate,
+        .btn-deactivate,
+        .btn-approve,
+        .btn-reject,
+        .btn-success,
+        .btn-warning,
+        .btn-danger {
+            border: none;
+            border-radius: 6px;
+            padding: 7px 10px;
+            margin: 2px 3px 2px 0;
+            min-width: 66px;
+            min-height: 32px;
+            font-family: var(--font-body);
+            font-size: 0.76rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 31, 77, 0.12);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+        }
+
+        .btn-view {
+            background-color: var(--primary-navy);
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #173b6c;
+        }
+
+        .btn-success {
+            background-color: #2f8f4e;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #267540;
+        }
+
+        .btn-warning {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+        }
+
+        .btn-warning:hover {
+            background-color: #b89135;
+        }
+
+        .btn-danger {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c3413d;
+        }
+
+        .btn-activate {
+            background-color: #2f8f4e;
+            color: white;
+        }
+
+        .btn-activate:hover {
+            background-color: #267540;
+        }
+
+        .btn-deactivate {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-deactivate:hover {
+            background-color: #565e64;
+        }
+
+        .btn-view:hover,
+        .btn-delete:hover,
+        .btn-activate:hover,
+        .btn-deactivate:hover,
+        .btn-approve:hover,
+        .btn-reject:hover,
+        .btn-success:hover,
+        .btn-warning:hover,
+        .btn-danger:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 10px rgba(0, 31, 77, 0.18);
+        }
+
+        .btn-view:disabled,
+        .btn-delete:disabled,
+        .btn-activate:disabled,
+        .btn-deactivate:disabled,
+        .btn-approve:disabled,
+        .btn-reject:disabled,
+        .btn-success:disabled,
+        .btn-warning:disabled,
+        .btn-danger:disabled {
+            cursor: not-allowed;
+            opacity: 0.45;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-adm {
+            padding: 7px 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            width: auto;
+            min-width: 96px;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .btn-approve {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .btn-approve:hover {
+            background-color: #4cae4c;
+        }
+
+        .btn-reject {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .btn-reject:hover {
+            background-color: #d43f3a;
+        }
+
+        .btn-delete {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #eea236;
+        }
+
+        /* Configuration State Status Badges Labels */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            min-width: 84px;
+        }
+
+        .pill-pending {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .pill-collected {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .pill-lost {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        .pill-completed {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .pill-rejected {
+            background-color: #d9534f;
+            color: white;
+        }
+
+        /* Hub Control Operations Selection Dropdowns */
+        .select-hub-status {
+            padding: 6px 8px;
+            font-size: 0.8rem;
+            border-radius: 6px;
+            border: 1px solid #d3dae2;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            width: 100%;
+            min-height: 34px;
+        }
+
+        /* Overlay Claims Verification Viewer Modal Box */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 31, 77, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 550px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.2);
+            border-top: 4px solid var(--secondary-gold);
+            position: relative;
+        }
+
+        .claim-detail-modal {
+            max-width: 920px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .claim-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .claim-detail-grid section {
+            border: 1px solid #e8edf3;
+            border-radius: 8px;
+            padding: 12px;
+            background: #fbfcfe;
+        }
+
+        .claim-detail-grid h4,
+        .claim-image-grid h4 {
+            color: var(--primary-navy);
+            font-size: 0.88rem;
+            margin-bottom: 8px;
+            font-family: var(--font-heading);
+        }
+
+        .claim-detail-grid p {
+            font-size: 0.84rem;
+            margin-bottom: 6px;
+            color: #39475a;
+        }
+
+        .claim-detail-note {
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #edf0f4;
+            line-height: 1.45;
+            min-height: 42px;
+        }
+
+        .claim-image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 16px;
+        }
+
+        .claim-image-box {
+            min-height: 190px;
+            border: 1px dashed #cfd7e2;
+            border-radius: 8px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #6c7786;
+            font-size: 0.85rem;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .claim-image-box img {
+            width: 100%;
+            height: 100%;
+            max-height: 280px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .close-modal:hover {
+            color: #d9534f;
+        }
+
+        .proof-img-placeholder {
+            width: 100%;
+            height: 120px;
+            background-color: #f5f5f5;
+            border: 1px dashed #ccc;
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        .modal-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            outline: none;
+            resize: vertical;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+
+        .modal-textarea:focus {
+            border-color: var(--primary-navy);
+        }
+
+        footer {
+            background-color: var(--primary-navy);
+            color: #aaa;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.75rem;
+            border-top: 3px solid var(--secondary-gold);
+            margin-top: auto;
+        }
+
+        @media (max-width: 992px) {
+            .dashboard-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .admin-profile {
+                flex-wrap: wrap;
+                justify-content: flex-end;
+            }
+
+            .table-controls-bar {
+                grid-template-columns: 1fr;
+            }
+
+            table {
+                table-layout: auto;
+            }
+
+            /* Softens table widths layout gracefully for mobile */
+            th,
+            td {
+                padding: 8px;
+                font-size: 0.8rem;
+            }
+
+            .claim-detail-grid,
+            .claim-image-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="{{ url_for('home') }}" class="brand">
+                <div class="brand-logo-circle"><img src="{{ url_for('static', filename='images/logo.png') }}"
+                        alt="GUMSHUDA Logo"></div>
+                <div class="brand-text">
+                    <h1><span>गुमशुदा</span> GUMSHUDA</h1>
+                    <p>Centralized Administration Control Room</p>
+                </div>
+            </a>
+            <div class="admin-profile">
+                <span class="admin-badge"><i class="fa-solid fa-shield-halved"></i> Main Hub Admin</span>
+                <a href="{{ url_for('logout') }}" class="btn-logout"><i class="fa-solid fa-power-off"></i>
+                    Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="dashboard-wrapper">
+
+        <aside class="sidebar-nav">
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active-link" id="link-metrics" onclick="switchAdminTab('metrics')"><i
+                            class="fa-solid fa-chart-line"></i> Dashboard Metrics</a></li>
+                <li><a href="#" id="link-lostitems" onclick="switchAdminTab('lostitems')"><i
+                            class="fa-solid fa-file-circle-exclamation"></i> Lost Reports Logs</a></li>
+                <li><a href="#" id="link-founditems" onclick="switchAdminTab('founditems')"><i
+                            class="fa-solid fa-box-open"></i> Found Deposits Hub</a></li>
+                <li><a href="#" id="link-verifications" onclick="switchAdminTab('verifications')"><i
+                            class="fa-solid fa-user-shield"></i> Claim Verifications</a></li>
+                <li><a href="#" id="link-users" onclick="switchAdminTab('users')"><i class="fa-solid fa-users-gear"></i>
+                        Manage User Accounts</a></li>
+                <li><a href="#" id="link-allitems" onclick="switchAdminTab('allitems')"><i class="fa-solid fa-eye"></i>
+                        View All Posted Items</a></li>
+                <li><a href="#" id="link-completed" onclick="switchAdminTab('completed')"><i
+                            class="fa-solid fa-clipboard-list"></i> Completed Reports</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="workspace-panel active-pane" id="pane-metrics">
+                <h2><i class="fa-solid fa-chart-pie" style="color: var(--secondary-gold);"></i> Real-Time Platform
+                    Analytics</h2>
+
+                <div class="metrics-summary-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Total Registered Users</h4>
+                            <p id="metric-users">0</p>
+                        </div>
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <div class="metric-card gold-border">
+                        <div class="metric-info">
+                            <h4>Total Lost Reports</h4>
+                            <p id="metric-lost-items">0</p>
+                        </div>
+                        <i class="fa-solid fa-file-invoice"></i>
+                    </div>
+                    <div class="metric-card alert-border">
+                        <div class="metric-info">
+                            <h4>Pending Claims Under Evaluation</h4>
+                            <p id="metric-pending-claims">0</p>
+                        </div>
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                    <div class="metric-card success-border">
+                        <div class="metric-info">
+                            <h4>Resolved Restorations Cases</h4>
+                            <p id="metric-approved-claims">0</p>
+                        </div>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-lostitems">
+                <h2><i class="fa-solid fa-file-circle-exclamation" style="color: var(--secondary-gold);"></i> Lost Item
+                    Database Logs</h2>
+                <div class="table-controls-bar">
+                    <div class="control-group">
+                        <label for="lostSearchText">Search by Item Name</label>
+                        <input type="text" class="table-search-input" id="lostSearchText"
+                            placeholder="Item Name / Identifier Title" oninput="updateLostLogsView()">
+                    </div>
+                    <div class="control-group">
+                        <label for="lostSort">Sort by</label>
+                        <select class="table-search-select" id="lostSort" onchange="updateLostLogsView()">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="lostStatusFilter">Filter by Status</label>
+                        <select class="table-search-select" id="lostStatusFilter" onchange="updateLostLogsView()">
+                            <option value="all">All Statuses</option>
+                            <option value="open">Open</option>
+                            <option value="found">Found</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="lostTypeFilter">Filter by Category</label>
+                        <select class="table-search-select" id="lostTypeFilter" onchange="updateLostLogsView()">
+                            <option value="all">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="Cards">Documents & Cards</option>
+                            <option value="Stationery">Books & Stationery</option>
+                            <option value="Personal">Personal Belongings</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Textbooks">Textbooks</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Sports">Sports Equipment</option>
+                            <option value="Tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="lostLocationSearch">Filter by Location</label>
+                        <input type="text" class="table-search-input" id="lostLocationSearch"
+                            placeholder="Lost Campus Spot Location" oninput="updateLostLogsView()">
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Lost ID</th>
+                                <th>Student Email</th>
+                                <th>Item Title</th>
+                                <th>Category</th>
+                                <th>Lost Location</th>
+                                <th>Report Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lostReportsBody">
+                            {% for item in lost_items %}
+                            <tr
+                                data-postid="{{ item.id }}"
+                                data-title="{{ item.item_name }}"
+                                data-category="{{ item.category }}"
+                                data-type="Lost"
+                                data-postedby="{{ item.owner.name }}"
+                                data-date="{{ item.date_lost }}"
+                                data-status="{{ item.status }}"
+                                data-location="{{ item.location }}"
+                                data-image="{{ url_for('static', filename='uploads/' ~ item.image) if item.image else '' }}"
+                                data-description="{{ item.description }}"
+                                data-remarks="Lost item report submitted by {{ item.owner.name }}">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.item_name }}</td>
+                                <td>{{ item.category }}</td>
+                                <td>{{ item.owner.name }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>{{ item.date_lost }}</td>
+                                <td>{{ item.status }}</td>
+
+                                <td>
+                                    <button class="btn-view" onclick="openItemDetailModal(this.closest('tr'))">
+                                        View
+                                    </button>
+
+                                    <button class="btn-delete" onclick="deleteLost('{{ item.id }}')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding: 16px; color: #555;">No lost reports
+                                    found.</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-founditems">
+                <h2><i class="fa-solid fa-box" style="color: var(--secondary-gold);"></i> Update Tracking Parameters
+                </h2>
+                <div class="table-controls-bar">
+                    <div class="control-group">
+                        <label for="foundSearchText">Search by Item Name</label>
+                        <input type="text" class="table-search-input" id="foundSearchText"
+                            placeholder="Item Name / Identifier Title" oninput="updateFoundLogsView()">
+                    </div>
+                    <div class="control-group">
+                        <label for="foundSort">Sort by</label>
+                        <select class="table-search-select" id="foundSort" onchange="updateFoundLogsView()">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="foundStatusFilter">Filter by Status</label>
+                        <select class="table-search-select" id="foundStatusFilter" onchange="updateFoundLogsView()">
+                            <option value="all">All Statuses</option>
+                            <option value="pending deposit">Pending Deposit</option>
+                            <option value="available">Available</option>
+                            <option value="claimed">Claimed</option>
+                            <option value="collected">Collected</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="foundTypeFilter">Filter by Category</label>
+                        <select class="table-search-select" id="foundTypeFilter" onchange="updateFoundLogsView()">
+                            <option value="all">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="Cards">Documents & Cards</option>
+                            <option value="Stationery">Books & Stationery</option>
+                            <option value="Personal">Personal Belongings</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Textbooks">Textbooks</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Sports">Sports Equipment</option>
+                            <option value="Tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="foundLocationSearch">Filter by Location</label>
+                        <input type="text" class="table-search-input" id="foundLocationSearch"
+                            placeholder="Found Campus Spot Location" oninput="updateFoundLogsView()">
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Found ID</th>
+                                <th>Finder ID</th>
+                                <th>Item Title</th>
+                                <th>Category</th>
+                                <th>Found Spot</th>
+                                <th>Report Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="foundReportsBody">
+                            {% for item in found_items %}
+                            <tr
+                                data-postid="{{ item.id }}"
+                                data-title="{{ item.item_name }}"
+                                data-category="{{ item.category }}"
+                                data-type="Found"
+                                data-postedby="{{ item.finder.name }}"
+                                data-date="{{ item.date_found }}"
+                                data-status="{{ item.status }}"
+                                data-location="{{ item.location }}"
+                                data-image="{{ url_for('static', filename='uploads/' ~ item.image) if item.image else '' }}"
+                                data-description="{{ item.description }}"
+                                data-remarks="Found item report submitted by {{ item.finder.name }}">
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.item_name }}</td>
+                                <td>{{ item.category }}</td>
+                                <td>{{ item.finder.name }}</td>
+                                <td>{{ item.location }}</td>
+                                <td>{{ item.date_found }}</td>
+                                <td>{{ item.status }}</td>
+                                <td>
+                                    <button class="btn-view" onclick="openItemDetailModal(this.closest('tr'))">
+                                        View
+                                    </button>
+                                    <button class="btn-success" onclick="receiveFound('{{ item.id }}')" {% if item.status != 'Pending Deposit' %}disabled{% endif %}>
+                                        Receive
+                                    </button>
+                                    <button class="btn-delete" onclick="deleteFound('{{ item.id }}')">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding: 16px; color: #555;">No found item
+                                    records available.</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-verifications">
+                <h2><i class="fa-solid fa-user-check" style="color: var(--secondary-gold);"></i> Pending Claims
+                    Ownership Verification</h2>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Claimant</th>
+                                <th>Found Item</th>
+                                <th>Status</th>
+                                <th>Submitted Date</th>
+                                <th>Verification Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="claimsTableBody">
+                            {% for claim in claims %}
+                            <tr>
+                                <td>{{ claim.id }}</td>
+                                <td>{{ claim.claimer.name }}</td>
+                                <td>{{ claim.found_item.item_name }}</td>
+                                <td>{{ claim.status }}</td>
+                                <td>
+                                    {{ claim.created_at.strftime('%d-%m-%Y') }}
+                                </td>
+                                <td>
+                                    <button class="btn-view" onclick="verifyClaim('{{ claim.id }}')">
+                                        Verify
+                                    </button>
+                                    <button class="btn-approve" onclick="approveClaim('{{ claim.id }}')" {% if claim.status != 'Pending' %}disabled{% endif %}>
+                                        Approve
+                                    </button>
+                                    <button class="btn-reject" onclick="rejectClaim('{{ claim.id }}')" {% if claim.status != 'Pending' %}disabled{% endif %}>
+                                        Reject
+                                    </button>
+                                    <button class="btn-success" onclick="completeClaim('{{ claim.id }}')" {% if claim.status != 'Approved' %}disabled{% endif %}>
+                                        Complete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding: 16px; color: #555;">No pending claims
+                                    at this time.</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-users">
+                <h2><i class="fa-solid fa-users" style="color: var(--secondary-gold);"></i> Account Profile Management
+                    Moderation Panel</h2>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User ID</th>
+                                <th>Student Full Name</th>
+                                <th>Academic Roll Number</th>
+                                <th>Institutional Email</th>
+                                <th>Department</th>
+                                
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Account Enforcement Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.name }}</td>
+                                <td>{{ user.roll_number }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.department }}</td>
+                                
+                                <td>
+                                    {% if user.is_admin %}
+                                    Admin
+                                    {% else %}
+                                    Student
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user.is_active %}
+                                    Active
+                                    {% else %}
+                                    Deactivated
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button class="btn-activate" onclick="activateUser('{{ user.id }}')" {% if user.is_active %}disabled{% endif %}>
+                                        Activate
+                                    </button>
+                                    <button class="btn-deactivate" onclick="deactivateUser('{{ user.id }}')" {% if user.is_admin or not user.is_active %}disabled{% endif %}>
+                                        Deactivate
+                                    </button>
+                                    <button class="btn-delete" onclick="deleteUser('{{ user.id }}')" {% if user.is_admin %}disabled{% endif %}>
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="9" style="text-align:center; padding: 16px; color: #555;">No user accounts
+                                    found.</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-allitems">
+                <h2><i class="fa-solid fa-eye" style="color: var(--secondary-gold);"></i> All Posted Items</h2>
+                <div class="table-controls-bar">
+                    <div class="control-group">
+                        <label for="allItemsSearchText">Search posted items</label>
+                        <input type="text" class="table-search-input" id="allItemsSearchText"
+                            placeholder="Search posted items by title, category, or ID..."
+                            oninput="updateAllPostedItemsView()">
+                    </div>
+                    <div class="control-group">
+                        <label for="allItemsSort">Sort by</label>
+                        <select class="table-search-select" id="allItemsSort" onchange="updateAllPostedItemsView()">
+                            <option value="newest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="allItemsStatusFilter">Filter by Status</label>
+                        <select class="table-search-select" id="allItemsStatusFilter"
+                            onchange="updateAllPostedItemsView()">
+                            <option value="all">All Statuses</option>
+                            <option value="available">Available</option>
+                            <option value="received">Received</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="allItemsTypeFilter">Filter by Category</label>
+                        <select class="table-search-select" id="allItemsTypeFilter"
+                            onchange="updateAllPostedItemsView()">
+                            <option value="all">All Categories</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="clothing">Clothing</option>
+                            <option value="Cards">Documents & Cards</option>
+                            <option value="Stationery">Books & Stationery</option>
+                            <option value="Personal">Personal Belongings</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Textbooks">Textbooks</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Sports">Sports Equipment</option>
+                            <option value="Tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="control-group">
+                        <label for="allItemsLocationSearch">Filter by Location</label>
+                        <input type="text" class="table-search-input" id="allItemsLocationSearch"
+                            placeholder="Filter by location" oninput="updateAllPostedItemsView()">
+                    </div>
+                </div>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Post ID</th>
+                                <th>Item Title</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th>Posted By</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set posted_items = lost_items + found_items %}
+                            {% for item in posted_items %}
+                            <tr data-postid="{{ ('#FND-' ~ item.id) if item.__tablename__ == 'found_items' else ('#LST-' ~ item.id) }}"
+                                data-title="{{ item.item_name|e }}" data-category="{{ item.category|e }}"
+                                data-type="{{ 'found' if item.__tablename__ == 'found_items' else 'lost' }}"
+                                data-postedby="{{ (item.finder.email if item.__tablename__ == 'found_items' else item.owner.email)|e }}"
+                                data-date="{{ item.date_found.strftime('%Y-%m-%d') if item.__tablename__ == 'found_items' else item.date_lost.strftime('%Y-%m-%d') }}"
+                                data-status="{{ item.status|lower|e }}"
+                                data-description="{{ item.description|default('')|e }}"
+                                data-image="{{ url_for('static', filename='uploads/' ~ item.image) if item.image else '' }}"
+                                data-location="{{ item.location|lower|e }}" data-remarks="{{ item.status|e }}">
+                                <td>{% if item.__tablename__ == 'found_items' %}#FND-{{ item.id }}{% else %}#LST-{{
+                                    item.id }}{% endif %}</td>
+                                <td>{{ item.item_name }}</td>
+                                <td>{{ item.category }}</td>
+                                <td>{% if item.__tablename__ == 'found_items' %}Found{% else %}Lost{% endif %}</td>
+                                <td>{{ item.finder.email if item.__tablename__ == 'found_items' else item.owner.email }}
+                                </td>
+                                <td>{{ item.date_found.strftime('%B %d, %Y') if item.__tablename__ == 'found_items' else
+                                    item.date_lost.strftime('%B %d, %Y') }}</td>
+                                <td><span
+                                        class="status-pill {% if item.status.lower() == 'available' or item.status.lower() == 'pending' %}pill-pending{% elif item.status.lower() in ['claimed','returned','completed'] %}pill-completed{% else %}pill-pending{% endif %}">{{
+                                        item.status }}</span></td>
+                                <td>
+                                    <button class="btn-view"
+                                        onclick="openItemDetailModal(this.closest('tr'))">Details</button>
+                                    <button class="btn-delete"
+                                        onclick="deletePostedItem(this.closest('tr'))">Delete</button>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align:center; padding: 16px; color: #555;">No posted items
+                                    available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="workspace-panel" id="pane-completed">
+                <h2><i class="fa-solid fa-clipboard-list" style="color: var(--secondary-gold);"></i> Completed Handover
+                    & Claim Reports</h2>
+                <p style="margin-bottom: 20px; color: #555;">Review completed handovers and resolved claims in one
+                    dedicated report panel.</p>
+
+                <div class="table-controls-bar" style="margin-bottom: 24px;">
+                    <div class="control-group">
+                        <label for="completedReportsSearchText">Search completed reports</label>
+                        <input type="text" class="table-search-input" id="completedReportsSearchText"
+                            placeholder="Search handovers or claims..." oninput="updateCompletedReportsView()">
+                    </div>
+                    <div class="control-group">
+                        <label for="completedReportsTypeFilter">Show report type</label>
+                        <select class="table-search-select" id="completedReportsTypeFilter"
+                            onchange="updateCompletedReportsView()">
+                            <option value="all">All report types</option>
+                            <option value="handovers">Handovers</option>
+                            <option value="claims">Claims</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="data-table-container" style="margin-bottom: 24px;">
+                    <h3
+                        style="font-size: 1rem; color: var(--primary-navy); margin-bottom: 10px; padding: 12px 14px 0 14px;">
+                        Lost Items Handed Over to Owner</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item ID</th>
+                                <th>Original Reporter</th>
+                                <th>Item Description</th>
+                                <th>Category</th>
+                                <th>Return Location</th>
+                                <th>Return Date</th>
+                                <th>Notified</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in completed_reports %}
+                            <tr>
+                                <td>{{ report.id }}</td>
+                                <td>{{ report.found_item.item_name }}</td>
+                                <td>{{ report.claimer.name }}</td>
+                                <td>{{ report.created_at.strftime('%d-%m-%Y') }}</td>
+                                <td>{{ report.status }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" style="text-align:center; padding: 16px; color: #555;">No completed
+                                    handovers yet.</td>
+                            </tr>
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="data-table-container">
+                    <h3
+                        style="font-size: 1rem; color: var(--primary-navy); margin-bottom: 10px; padding: 12px 14px 0 14px;">
+                        Completed / Rejected Claims</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Claim ID</th>
+                                <th>Claimant Roll</th>
+                                <th>Item ID</th>
+                                <th>Outcome</th>
+                                <th>Resolution Date</th>
+                                <th>Notes / Administrative Remarks Archive</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completed-claims-tbody">
+                            {% for claim in completed_claims %}
+                            <tr>
+                                <td>#CLM-{{ claim.id }}</td>
+                                <td>{{ claim.claimer.roll_number }}</td>
+                                <td>#FND-{{ claim.found_item.id }}</td>
+                                <td><span
+                                        class="status-pill {% if claim.status == 'Completed' %}pill-completed{% else %}pill-rejected{% endif %}">{{
+                                        claim.status }}</span></td>
+                                <td>{{ claim.created_at.strftime('%B %d, %Y') }}</td>
+                                <td>{{ claim.message or 'No additional notes.' }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" style="text-align:center; padding: 16px; color: #555;">No completed or
+                                    rejected claims found.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="admin-modal" id="itemDetailModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeItemDetailModal()">&times;</span>
+            <h3 style="color: var(--primary-navy); margin-bottom: 12px;"><i class="fa-solid fa-box-open"
+                    style="color: var(--secondary-gold);"></i> Posted Item Details</h3>
+            <div class="detail-grid" style="display:grid; gap:12px; font-size: 0.9rem;">
+                <p><strong>Post ID:</strong> <span id="detailPostId"></span></p>
+                <p><strong>Item Title:</strong> <span id="detailTitle"></span></p>
+                <p><strong>Category:</strong> <span id="detailCategory"></span></p>
+                <p><strong>Type:</strong> <span id="detailType"></span></p>
+                <p><strong>Posted By:</strong> <span id="detailPostedBy"></span></p>
+                <p><strong>Submission Date:</strong> <span id="detailDate"></span></p>
+                <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+                <p><strong>Location Found:</strong> <span id="detailLocation"></span></p>
+                <p><strong>Description:</strong></p>
+                <p id="detailDescription"
+                    style="padding: 12px; background: #f9f9f9; border-radius: 6px; color: #444; line-height: 1.4;"></p>
+                <p><strong>Uploaded Image:</strong></p>
+                <div id="detailImageBox" class="claim-image-box"></div>
+                <p><strong>Admin Remarks:</strong> <span id="detailRemarks"></span></p>
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="button" class="btn-adm btn-approve"
+                    style="flex: 1; padding: 10px; justify-content: center;"
+                    onclick="alert('Item details verified successfully.'); closeItemDetailModal();"><i
+                        class="fa-solid fa-check"></i> Verify Details</button>
+                <button type="button" class="btn-adm btn-reject" style="background-color:#777;"
+                    onclick="closeItemDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-modal" id="verificationModal">
+        <div class="modal-content claim-detail-modal">
+            <span class="close-modal" onclick="closeVerificationModal()">&times;</span>
+            <h3 style="color: var(--primary-navy); margin-bottom: 12px;"><i class="fa-solid fa-user-shield"
+                    style="color: var(--secondary-gold);"></i> Verify Claim Details</h3>
+
+            <div class="claim-detail-grid">
+                <section>
+                    <h4>Claim</h4>
+                    <p><strong>Claim ID:</strong> <span id="modalClaimId"></span></p>
+                    <p><strong>Status:</strong> <span id="modalClaimStatus"></span></p>
+                    <p><strong>Submitted:</strong> <span id="modalClaimDate"></span></p>
+                    <p><strong>Claim Message:</strong></p>
+                    <p id="modalProofReason" class="claim-detail-note"></p>
+                </section>
+
+                <section>
+                    <h4>Claimant</h4>
+                    <p><strong>Name:</strong> <span id="modalClaimantName"></span></p>
+                    <p><strong>Roll:</strong> <span id="modalClaimantRoll"></span></p>
+                    <p><strong>Email:</strong> <span id="modalClaimantEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="modalClaimantPhone"></span></p>
+                    <p><strong>Department:</strong> <span id="modalClaimantDepartment"></span></p>
+                    <p><strong>Year:</strong> <span id="modalClaimantYear"></span></p>
+                </section>
+
+                <section>
+                    <h4>Found Item</h4>
+                    <p><strong>Item ID:</strong> <span id="modalItemId"></span></p>
+                    <p><strong>Name:</strong> <span id="modalItemName"></span></p>
+                    <p><strong>Category:</strong> <span id="modalItemCategory"></span></p>
+                    <p><strong>Location:</strong> <span id="modalItemLocation"></span></p>
+                    <p><strong>Date Found:</strong> <span id="modalItemDate"></span></p>
+                    <p><strong>Status:</strong> <span id="modalItemStatus"></span></p>
+                    <p><strong>Description:</strong></p>
+                    <p id="modalItemDescription" class="claim-detail-note"></p>
+                </section>
+
+                <section>
+                    <h4>Finder</h4>
+                    <p><strong>Name:</strong> <span id="modalFinderName"></span></p>
+                    <p><strong>Roll:</strong> <span id="modalFinderRoll"></span></p>
+                    <p><strong>Email:</strong> <span id="modalFinderEmail"></span></p>
+                    <p><strong>Phone:</strong> <span id="modalFinderPhone"></span></p>
+                </section>
+            </div>
+
+            <div class="claim-image-grid">
+                <div>
+                    <h4>Found Item Image</h4>
+                    <div id="modalItemImageBox" class="claim-image-box"></div>
+                </div>
+                <div>
+                    <h4>Claim Proof Image</h4>
+                    <div id="modalProofImageBox" class="claim-image-box"></div>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; margin-bottom: 15px;">
+                <label for="modalAdminNotes"
+                    style="font-size: 0.85rem; font-weight: 600; display: block; color: var(--text-navy);">Administrative
+                    Processing Notes (Appended to Final Report Logs)</label>
+                <textarea id="modalAdminNotes" class="modal-textarea" rows="3"
+                    placeholder="Enter notes here (e.g., Verified unique interior initials...)"></textarea>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="button" class="btn-adm btn-approve"
+                    style="flex: 1; padding: 10px; justify-content: center;" onclick="approveClaimFromModal()">
+                    <i class="fa-solid fa-check"></i> Approve Claim
+                </button>
+                <button type="button" class="btn-adm btn-reject"
+                    style="flex: 1; padding: 10px; justify-content: center;" onclick="rejectClaimFromModal()">
+                    <i class="fa-solid fa-xmark"></i> Reject Claim
+                </button>
+                <button type="button" class="btn-adm btn-approve"
+                    style="flex: 1; padding: 10px; justify-content: center; background-color:#2f8f4e;" onclick="completeClaimFromModal()">
+                    <i class="fa-solid fa-handshake"></i> Complete Handover
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026-2027 GUMSHUDA Control Room Terminal | SIES College Security Administration Infrastructure Framework.
+    </footer>
+
+    <script>
+        function updateDashboardMetrics() {
+            fetch('/api/admin/dashboard')
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.success) return;
+
+                    document.getElementById('metric-users').textContent = data.users ?? 0;
+                    document.getElementById('metric-lost-items').textContent = data.lost_items ?? 0;
+                    document.getElementById('metric-pending-claims').textContent = data.pending_claims ?? 0;
+                    document.getElementById('metric-approved-claims').textContent = data.approved_claims ?? 0;
+                })
+                .catch(() => {
+                    document.getElementById('metric-users').textContent = '{{ metrics.users }}';
+                    document.getElementById('metric-lost-items').textContent = '{{ metrics.lost_items }}';
+                    document.getElementById('metric-pending-claims').textContent = '{{ metrics.pending_claims }}';
+                    document.getElementById('metric-approved-claims').textContent = '{{ metrics.approved_claims }}';
+                });
+        }
+
+        function switchAdminTab(targetPaneId) {
+            const panels = document.querySelectorAll('.workspace-panel');
+            const navLinks = document.querySelectorAll('.sidebar-menu a');
+
+            panels.forEach(panel => panel.classList.remove('active-pane'));
+            navLinks.forEach(link => link.classList.remove('active-link'));
+
+            document.getElementById('pane-' + targetPaneId).classList.add('active-pane');
+            document.getElementById('link-' + targetPaneId).classList.add('active-link');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboardMetrics();
+            setInterval(updateDashboardMetrics, 10000);
+        });
+
+        let activeVerificationClaimId = null;
+
+        function setText(id, value) {
+            document.getElementById(id).innerText = value || 'Not provided';
+        }
+
+        function setImageBox(id, url, label) {
+            const box = document.getElementById(id);
+            if (url) {
+                box.innerHTML = `<a href="${url}" target="_blank"><img src="${url}" alt="${label}"></a>`;
+                return;
+            }
+            box.innerHTML = `<span>No ${label} uploaded.</span>`;
+        }
+
+        async function verifyClaim(claimId) {
+            const response = await fetch(`/api/admin/claims/${claimId}/details`);
+            const data = await response.json();
+
+            if (!data.success) {
+                alert(data.message || 'Unable to load claim details.');
+                return;
+            }
+
+            activeVerificationClaimId = claimId;
+
+            setText('modalClaimId', data.claim.id);
+            setText('modalClaimStatus', data.claim.status);
+            setText('modalClaimDate', data.claim.created_at);
+            setText('modalProofReason', data.claim.message);
+
+            setText('modalClaimantName', data.claimer.name);
+            setText('modalClaimantRoll', data.claimer.roll_number);
+            setText('modalClaimantEmail', data.claimer.email);
+            setText('modalClaimantPhone', data.claimer.phone);
+            setText('modalClaimantDepartment', data.claimer.department);
+            setText('modalClaimantYear', data.claimer.year);
+
+            setText('modalItemId', data.item.id);
+            setText('modalItemName', data.item.item_name);
+            setText('modalItemCategory', data.item.category);
+            setText('modalItemLocation', data.item.location);
+            setText('modalItemDate', data.item.date_found);
+            setText('modalItemStatus', data.item.status);
+            setText('modalItemDescription', data.item.description);
+
+            setText('modalFinderName', data.finder.name);
+            setText('modalFinderRoll', data.finder.roll_number);
+            setText('modalFinderEmail', data.finder.email);
+            setText('modalFinderPhone', data.finder.phone);
+
+            setImageBox('modalItemImageBox', data.item.image_url, 'item image');
+            setImageBox('modalProofImageBox', data.claim.proof_url, 'claim proof image');
+
+            document.getElementById('modalAdminNotes').value = '';
+            document.getElementById('verificationModal').style.display = 'flex';
+        }
+
+        function closeVerificationModal() {
+            document.getElementById('verificationModal').style.display = 'none';
+            activeVerificationClaimId = null;
+        }
+
+        function approveClaimFromModal() {
+            if (!activeVerificationClaimId) return;
+            approveClaim(activeVerificationClaimId);
+            closeVerificationModal();
+        }
+
+        function rejectClaimFromModal() {
+            if (!activeVerificationClaimId) return;
+            rejectClaim(activeVerificationClaimId);
+            closeVerificationModal();
+        }
+
+        function completeClaimFromModal() {
+            if (!activeVerificationClaimId) return;
+            completeClaim(activeVerificationClaimId);
+            closeVerificationModal();
+        }
+
+        function openItemDetailModal(row) {
+            document.getElementById('detailPostId').innerText = row.dataset.postid || '';
+            document.getElementById('detailTitle').innerText = row.dataset.title || '';
+            document.getElementById('detailCategory').innerText = row.dataset.category || '';
+            document.getElementById('detailType').innerText =
+                row.dataset.type ? row.dataset.type.charAt(0).toUpperCase() + row.dataset.type.slice(1) : '';
+            document.getElementById('detailPostedBy').innerText = row.dataset.postedby || '';
+            document.getElementById('detailDate').innerText = row.dataset.date || '';
+            document.getElementById('detailStatus').innerText = row.dataset.status || '';
+            document.getElementById('detailLocation').innerText = row.dataset.location || '';
+            document.getElementById('detailDescription').innerText = row.dataset.description || '';
+            document.getElementById('detailRemarks').innerText = row.dataset.remarks || '';
+            setImageBox('detailImageBox', row.dataset.image || '', 'item image');
+            document.getElementById('itemDetailModal').style.display = 'flex';
+        }
+
+        function closeItemDetailModal() {
+            document.getElementById('itemDetailModal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            const detailModal = document.getElementById('itemDetailModal');
+            const verifyModal = document.getElementById('verificationModal');
+            if (event.target === detailModal) closeItemDetailModal();
+            if (event.target === verifyModal) closeVerificationModal();
+        }
+
+        function updateLostLogsView() {
+            const sortOrder = document.getElementById('lostSort').value;
+            const statusFilter = document.getElementById('lostStatusFilter').value;
+            const categoryFilter = document.getElementById('lostTypeFilter').value.toLowerCase();
+            const titleSearch = document.getElementById('lostSearchText').value.trim().toLowerCase();
+            const locationSearch = document.getElementById('lostLocationSearch').value.trim().toLowerCase();
+            const tbody = document.querySelector('#pane-lostitems tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.forEach(row => {
+                const status = (row.dataset.status || '').toLowerCase();
+                const category = (row.dataset.category || '').toLowerCase();
+                const location = (row.dataset.location || '').toLowerCase();
+                const title = (row.dataset.title || '').toLowerCase();
+                const matchesStatus = statusFilter === 'all' || status === statusFilter;
+                const matchesCategory = categoryFilter === 'all' || category.includes(categoryFilter);
+                const matchesTitle = !titleSearch || title.includes(titleSearch);
+                const matchesLocation = !locationSearch || location.includes(locationSearch);
+                row.style.display = matchesStatus && matchesCategory && matchesTitle && matchesLocation ? '' : 'none';
+            });
+
+            const sortedRows = rows.slice().sort((a, b) => {
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+                if (isNaN(dateA) || isNaN(dateB)) return 0;
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            sortedRows.forEach(row => tbody.appendChild(row));
+        }
+
+        function updateFoundLogsView() {
+            const sortOrder = document.getElementById('foundSort').value;
+            const statusFilter = document.getElementById('foundStatusFilter').value;
+            const categoryFilter = document.getElementById('foundTypeFilter').value.toLowerCase();
+            const titleSearch = document.getElementById('foundSearchText').value.trim().toLowerCase();
+            const locationSearch = document.getElementById('foundLocationSearch').value.trim().toLowerCase();
+            const tbody = document.querySelector('#pane-founditems tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.forEach(row => {
+                const status = (row.dataset.status || '').toLowerCase();
+                const category = (row.dataset.category || '').toLowerCase();
+                const location = (row.dataset.location || '').toLowerCase();
+                const title = (row.dataset.title || '').toLowerCase();
+                const matchesStatus = statusFilter === 'all' || status === statusFilter;
+                const matchesCategory = categoryFilter === 'all' || category.includes(categoryFilter);
+                const matchesTitle = !titleSearch || title.includes(titleSearch);
+                const matchesLocation = !locationSearch || location.includes(locationSearch);
+                row.style.display = matchesStatus && matchesCategory && matchesTitle && matchesLocation ? '' : 'none';
+            });
+
+            const sortedRows = rows.slice().sort((a, b) => {
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+                if (isNaN(dateA) || isNaN(dateB)) return 0;
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            sortedRows.forEach(row => tbody.appendChild(row));
+        }
+
+        function updateAllPostedItemsView() {
+            const sortOrder = document.getElementById('allItemsSort').value;
+            const statusFilter = document.getElementById('allItemsStatusFilter').value;
+            const typeFilter = document.getElementById('allItemsTypeFilter').value;
+            const titleSearch = document.getElementById('allItemsSearchText').value.trim().toLowerCase();
+            const locationSearch = document.getElementById('allItemsLocationSearch').value.trim().toLowerCase();
+            const tbody = document.querySelector('#pane-allitems tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.forEach(row => {
+                const status = (row.dataset.status || '').toLowerCase();
+                const type = (row.dataset.type || '').toLowerCase();
+                const location = (row.dataset.location || '').toLowerCase();
+                const title = (row.dataset.title || '').toLowerCase();
+                const category = (row.dataset.category || '').toLowerCase();
+                const postId = (row.dataset.postid || '').toLowerCase();
+                const matchesStatus = statusFilter === 'all' || status === statusFilter;
+                const matchesType = typeFilter === 'all' || type === typeFilter;
+                const matchesTitle = !titleSearch || title.includes(titleSearch) || category.includes(titleSearch) || postId.includes(titleSearch);
+                const matchesLocation = !locationSearch || location.includes(locationSearch);
+                row.style.display = matchesStatus && matchesType && matchesTitle && matchesLocation ? '' : 'none';
+            });
+
+            const sortedRows = rows.slice().sort((a, b) => {
+                const dateA = new Date(a.dataset.date);
+                const dateB = new Date(b.dataset.date);
+                if (isNaN(dateA) || isNaN(dateB)) return 0;
+                return sortOrder === 'newest' ? dateB - dateA : dateA - dateB;
+            });
+            sortedRows.forEach(row => tbody.appendChild(row));
+        }
+
+        function updateCompletedReportsView() {
+            const searchText = document.getElementById('completedReportsSearchText').value.trim().toLowerCase();
+            const reportType = document.getElementById('completedReportsTypeFilter').value;
+
+            const sections = [
+                { id: 'pane-completed .data-table-container:nth-of-type(1)', type: 'handovers' },
+                { id: 'pane-completed .data-table-container:nth-of-type(2)', type: 'claims' }
+            ];
+
+            sections.forEach(section => {
+                const container = document.querySelector(section.id);
+                const rows = Array.from(container.querySelectorAll('tbody tr'));
+
+                rows.forEach(row => {
+                    const cells = Array.from(row.querySelectorAll('td')).map(cell => cell.innerText.toLowerCase());
+                    const matchesSearch = !searchText || cells.some(value => value.includes(searchText));
+                    const shouldShowSection = reportType === 'all' || reportType === section.type;
+                    row.style.display = matchesSearch && shouldShowSection ? '' : 'none';
+                });
+            });
+        }
+
+        async function loadLostItems() {
+            const response = await fetch("/api/admin/lost-items");
+            const result = await response.json();
+            const items = result.items || result;
+            const tbody = document.getElementById("lostReportsBody");
+            tbody.innerHTML = "";
+            items.forEach(item => {
+                tbody.innerHTML += `
+                <tr
+                    data-postid="${item.id || ''}"
+                    data-title="${item.item_name || ''}"
+                    data-category="${item.category || ''}"
+                    data-type="Lost"
+                    data-postedby="${item.owner || ''}"
+                    data-date="${item.date_lost || ''}"
+                    data-status="${item.status || ''}"
+                    data-location="${item.location || ''}"
+                    data-image="${item.image_url || ''}"
+                    data-description="${item.description || ''}"
+                    data-remarks="Lost item report submitted by ${item.owner || ''}">
+                <td>${item.id}</td>
+                <td>${item.item_name}</td>
+                <td>${item.category}</td>
+                <td>${item.owner}</td>
+                <td>${item.location}</td>
+                <td>${item.date_lost}</td>
+                <td>${item.status}</td>
+                <td>
+                    <button
+                        class="btn-view"
+                        onclick="openItemDetailModal(this.closest('tr'))">
+                        View
+                    </button>
+                    <button
+                        class="btn-success"
+                        onclick="markFound(${item.id})">
+                        Found
+                    </button>
+                    <button
+                        class="btn-warning"
+                        onclick="archiveItem(${item.id})">
+                        Archive
+                    </button>
+                    <button
+                        class="btn-danger"
+                        onclick="deleteLostItem(${item.id})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+            `;
+            });
+        }
+
+        async function markFound(id) {
+            const response = await fetch(
+                `/api/admin/lost-items/${id}/found`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            loadLostItems();
+        }
+        async function archiveItem(id) {
+            const response = await fetch(
+                `/api/admin/lost-items/${id}/archive`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            loadLostItems();
+        }
+
+        window.onload = function () {
+            loadLostItems();
+        }
+
+        async function loadFoundItems() {
+            const response = await fetch("/api/admin/found-items");
+            const result = await response.json();
+            const items = result.items || result;
+            const tbody = document.getElementById("foundReportsBody");
+            tbody.innerHTML = "";
+            items.forEach(item => {
+                tbody.innerHTML += `
+        <tr
+            data-postid="${item.id || ''}"
+            data-title="${item.item_name || ''}"
+            data-category="${item.category || ''}"
+            data-type="Found"
+            data-postedby="${item.finder || ''}"
+            data-date="${item.date_found || ''}"
+            data-status="${item.status || ''}"
+            data-location="${item.location || ''}"
+            data-image="${item.image_url || ''}"
+            data-description="${item.description || ''}"
+            data-remarks="Found item report submitted by ${item.finder || ''}">
+            <td>${item.id}</td>
+            <td>${item.item_name}</td>
+            <td>${item.category}</td>
+            <td>${item.finder}</td>
+            <td>${item.location}</td>
+            <td>${item.date_found}</td>
+            <td>${item.status}</td>
+            <td>
+                <button class="btn-view"
+                    onclick="openItemDetailModal(this.closest('tr'))">
+                    View
+                </button>
+                <button class="btn-success"
+                    onclick="receiveFound(${item.id})"
+                    ${item.status !== "Pending Deposit" ? "disabled" : ""}>
+                    Receive
+                </button>
+                <button class="btn-warning"
+                    onclick="archiveFoundItem(${item.id})">
+                    Archive
+                </button>
+                <button class="btn-danger"
+                    onclick="deleteFoundItem(${item.id})">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        `;
+            });
+        }
+
+        async function markReturned(id) {
+            const response = await fetch(
+                `/api/admin/found-items/${id}/returned`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            loadFoundItems();
+        }
+        async function archiveFoundItem(id) {
+            const response = await fetch(
+                `/api/admin/found-items/${id}/archive`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            loadFoundItems();
+        }
+
+        async function deleteFoundItem(id) {
+            if (!confirm("Delete this found item?"))
+                return;
+            const response = await fetch(
+                `/api/admin/found-items/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            loadFoundItems();
+        }
+
+        async function deactivateUser(id) {
+            if (!confirm("Deactivate this user account? The user will no longer be able to log in."))
+                return;
+
+            const response = await fetch(
+                `/api/admin/users/${id}/deactivate`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                window.location.reload();
+            }
+        }
+
+        async function activateUser(id) {
+            if (!confirm("Activate this user account? The user will be able to log in again."))
+                return;
+
+            const response = await fetch(
+                `/api/admin/users/${id}/activate`,
+                {
+                    method: "PUT"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                window.location.reload();
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm("Delete this user account permanently?"))
+                return;
+
+            const response = await fetch(
+                `/api/admin/users/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                window.location.reload();
+            }
+        }
+
+        async function deletePostedItem(row) {
+            const postId = row.dataset.postid || "";
+            const itemType = row.dataset.type;
+            const numericId = postId.replace(/\D/g, "");
+
+            if (!numericId || !confirm("Delete this posted item?"))
+                return;
+
+            const url = itemType === "found"
+                ? `/api/admin/delete-found/${numericId}`
+                : `/api/admin/lost-items/${numericId}`;
+
+            const response = await fetch(url, {
+                method: "DELETE"
+            });
+            const result = await response.json();
+            alert(result.message);
+
+            if (result.success) {
+                row.remove();
+                loadLostItems();
+                loadFoundItems();
+            }
+        }
+
+        async function loadClaims() {
+
+            const response =
+                await fetch("/api/admin/claims");
+
+            const result =
+                await response.json();
+
+            const claims =
+                result.claims || result;
+
+            const tbody =
+                document.getElementById(
+                    "claimsTableBody"
+                );
+
+            tbody.innerHTML = "";
+
+            if (!claims.length) {
+                tbody.innerHTML = `
+        <tr>
+        <td colspan="6" style="text-align:center; padding: 16px; color: #555;">No pending claims at this time.</td>
+        </tr>
+        `;
+                return;
+            }
+
+            claims.forEach(claim => {
+                tbody.innerHTML += `
+
+        <tr>
+
+        <td>${claim.id}</td>
+
+        <td>${claim.claimer}</td>
+
+        <td>${claim.item_name}</td>
+
+        <td>${claim.status}</td>
+
+        <td>${claim.created_at}</td>
+
+        <td>
+
+        <button
+        class="btn-view"
+        onclick="verifyClaim(${claim.id})">
+
+        Verify
+
+        </button>
+
+        <button
+        class="btn-approve"
+        onclick="approveClaim(${claim.id})"
+        ${claim.status !== "Pending" ? "disabled" : ""}>
+
+        Approve
+
+        </button>
+
+        <button
+        class="btn-reject"
+        onclick="rejectClaim(${claim.id})"
+        ${claim.status !== "Pending" ? "disabled" : ""}>
+
+        Reject
+
+        </button>
+
+        <button
+        class="btn-success"
+        onclick="completeClaim(${claim.id})"
+        ${claim.status !== "Approved" ? "disabled" : ""}>
+
+        Complete
+
+        </button>
+
+        </td>
+
+        </tr>
+
+        `;
+
+            });
+
+        }
+
+        async function approveClaim(id) {
+
+            const response =
+                await fetch(
+
+                    `/api/admin/claims/${id}/approve`,
+
+                    {
+                        method: "PUT"
+                    });
+
+            const result =
+                await response.json();
+
+            alert(result.message);
+
+            loadClaims();
+
+        }
+
+        async function rejectClaim(id) {
+
+            const response =
+                await fetch(
+
+                    `/api/admin/claims/${id}/reject`,
+
+                    {
+                        method: "PUT"
+                    });
+
+            const result =
+                await response.json();
+
+            alert(result.message);
+
+            loadClaims();
+
+        }
+
+        async function receiveFound(id) {
+            const depositCode = prompt("Enter the deposit code given by the finder:");
+
+            if (!depositCode)
+                return;
+
+            const response = await fetch(
+                `/api/admin/found-items/${id}/receive`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        deposit_code: depositCode
+                    })
+                }
+            );
+            const result = await response.json();
+            alert(result.message);
+            if (result.success) {
+                loadFoundItems();
+            }
+        }
+
+        async function completeClaim(id) {
+            const pickupCode = prompt("Enter the pickup code provided by the user:");
+
+            if (!pickupCode)
+                return;
+
+            const response =
+                await fetch(
+
+                    `/api/admin/claims/${id}/complete`,
+
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            pickup_code: pickupCode
+                        })
+                    });
+
+            const result =
+                await response.json();
+
+            alert(result.message);
+
+            loadClaims();
+
+        }
+
+        loadClaims();
+        window.onload = function () {
+            loadLostItems();
+            loadFoundItems();
+            loadClaims();
+        };
+
+        async function deleteLost(id) {
+            if (!confirm("Delete this report?"))
+                return;
+            const res = await fetch(`/api/admin/lost-items/${id}`, {
+                method: "DELETE"
+            });
+            const data = await res.json();
+            alert(data.message);
+            location.reload();
+        }
+
+        async function deleteFound(id) {
+            if (!confirm("Delete this report?"))
+                return;
+            const res = await fetch(`/api/admin/delete-found/${id}`, {
+                method: "DELETE"
+            });
+            const data = await res.json();
+            alert(data.message);
+            location.reload();
+        }
+
+        async function loadDashboardMetrics() {
+
+            try {
+                const response = await fetch("/api/admin/dashboard-metrics");
+                const data = await response.json();
+                document.getElementById("metric-users").textContent = data.users;
+                document.getElementById("metric-lost-items").textContent = data.lost_items;
+                document.getElementById("metric-pending-claims").textContent = data.pending_claims;
+                document.getElementById("metric-approved-claims").textContent = data.approved_claims;
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        window.onload = function () {
+            loadDashboardMetrics();
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GUMSHUDA - Lost & Found Portal | SIES College</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-navy: #001F4D;
+            --secondary-gold: #C9A44C;
+            --bg-ivory: #FCFCFA;
+            --text-navy: #0A2342;
+            --accent-gold: #D8B56A;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --font-hindi: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-ivory);
+            color: var(--text-navy);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Bar */
+        header {
+            background-color: var(--primary-navy);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo-circle {
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            color: var(--primary-navy);
+            font-size: 1.2rem;
+            overflow: hidden;
+        }
+
+        .brand-logo-circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 3px;
+        }
+
+        .brand-text h1 {
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+        }
+        
+        .brand-text h1 span {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .brand-text p {
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-gold);
+        }
+
+        .btn-login {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy) !important;
+            padding: 8px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s !important;
+        }
+
+        .btn-login:hover {
+            background-color: var(--accent-gold);
+        }
+
+        .btn-register {
+            background-color: transparent;
+            color: white !important;
+            border: 2px solid var(--secondary-gold);
+            padding: 6px 18px;
+            border-radius: 4px;
+            transition: all 0.3s !important;
+        }
+
+        .btn-register:hover {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 31, 77, 0.9), rgba(0, 31, 77, 0.85)), 
+            url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=1470&auto=format&fit=crop') 
+            no-repeat center center/cover;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+            border-bottom: 5px solid var(--secondary-gold);
+        }
+
+        .hero-logo-large {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .hero-logo-large span.hindi {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .hero p.tagline {
+            font-size: 1.3rem;
+            color: var(--accent-gold);
+            letter-spacing: 2px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 30px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+            border: 2px solid var(--secondary-gold);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-gold);
+            border-color: var(--accent-gold);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn-secondary:hover {
+            background-color: white;
+            color: var(--primary-navy);
+        }
+
+        /* Item Category Quick Icons Bar */
+        .items-indicator-bar {
+            background-color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            margin-bottom: 50px;
+        }
+
+        .icon-wrapper {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-navy);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .icon-item i {
+            font-size: 1.8rem;
+            color: var(--secondary-gold);
+            margin-bottom: 8px;
+            transition: transform 0.3s;
+        }
+
+        .icon-item:hover i {
+            transform: scale(1.2);
+            color: var(--accent-gold);
+        }
+
+        /* Instant Search Component */
+        .search-section {
+            margin-bottom: 60px;
+        }
+
+        .search-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid rgba(201, 164, 76, 0.2);
+        }
+
+        .search-container h2 {
+            margin-bottom: 20px;
+            color: var(--primary-navy);
+            position: relative;
+            padding-bottom: 5px;
+        }
+
+        .search-container h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: var(--secondary-gold);
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: var(--primary-navy);
+        }
+
+        /* Live Dashboard Stats Section */
+        .stats-section {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 50px 0;
+            margin-bottom: 60px;
+            border-top: 4px solid var(--secondary-gold);
+            border-bottom: 4px solid var(--secondary-gold);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .stat-card {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border: 1px solid rgba(216, 181, 106, 0.2);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ddd;
+        }
+
+        /* Recent Activity / Showcase Areas */
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 2rem;
+            color: var(--primary-navy);
+        }
+
+        .section-title span {
+            color: var(--secondary-gold);
+        }
+
+        .recent-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .item-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-top: 3px solid var(--secondary-gold);
+            transition: transform 0.3s;
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .item-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .badge-lost { background-color: #d9534f; }
+        .badge-found { background-color: #5cb85c; }
+
+        .item-img-container {
+            position: relative;
+            height: 200px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ccc;
+        }
+
+        .item-img-container i {
+            font-size: 3.5rem;
+        }
+
+        .item-details {
+            padding: 20px;
+        }
+
+        .item-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--primary-navy);
+        }
+
+        .item-meta {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 15px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 5px 10px;
+        }
+
+        .item-meta i {
+            color: var(--secondary-gold);
+            width: 16px;
+        }
+
+        .btn-view {
+            display: block;
+            text-align: center;
+            background-color: var(--primary-navy);
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-view:hover {
+            background-color: var(--text-navy);
+            color: var(--accent-gold);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 40px 0 20px 0;
+            border-top: 5px solid var(--secondary-gold);
+            font-size: 0.9rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-about h3, .footer-links h3 {
+            color: var(--secondary-gold);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--accent-gold);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 0.8rem;
+        }
+
+        /* Mobile Optimization Guidelines */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+            }
+            .hero {
+                padding: 60px 0;
+            }
+            .hero-logo-large {
+                font-size: 3.2rem;
+            }
+            .hero p.tagline {
+                font-size: 1.1rem;
+            }
+            .hero p:not(.tagline) {
+                font-size: 1rem;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 20px;
+            }
+            .items-indicator-bar {
+                padding: 15px 0;
+            }
+            .icon-wrapper {
+                gap: 12px;
+            }
+            .icon-item {
+                min-width: 120px;
+                flex: 1 1 140px;
+            }
+            .search-container {
+                padding: 25px;
+            }
+            .stats-section {
+                padding: 35px 0;
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .recent-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+            .item-img-container {
+                height: 180px;
+            }
+            .item-details h3 {
+                font-size: 1.1rem;
+            }
+            .footer-grid {
+                gap: 25px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+            .nav-links li {
+                width: auto;
+            }
+            .brand {
+                justify-content: center;
+                text-align: center;
+            }
+            .brand-text h1 {
+                font-size: 1.2rem;
+            }
+            .hero-logo-large {
+                font-size: 2.6rem;
+            }
+            .hero p.tagline {
+                font-size: 0.95rem;
+            }
+            .hero p:not(.tagline) {
+                font-size: 0.95rem;
+                margin-bottom: 25px;
+            }
+            .search-container {
+                padding: 20px;
+            }
+            .search-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-grid {
+                gap: 20px;
+            }
+            .item-meta {
+                grid-template-columns: 1fr;
+                gap: 8px 0;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            footer {
+                padding: 30px 0 20px;
+            }
+            .footer-bottom {
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="#" class="brand">
+                <div class="brand-logo-circle">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GUMSHUDA Logo">
+                </div>
+                <div class="brand-text">
+                    <h1><span>गुमशुदा</span> GUMSHUDA</h1>
+                    <p>Lost & Found Portal</p>
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#search">Search Belongings</a></li>
+                <li><a href="#recent">Recent Items</a></li>
+                <li><a href="{{ url_for("login_page") }}" class="btn-login"><i class="fa-solid fa-sign-in-alt"></i> Login</a></li>
+                <li><a href="{{ url_for("register_page") }}" class="btn-register"><i class="fa-solid fa-user-plus"></i> Register</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-logo-large"><span class="hindi">गुमशुदा</span> GUMSHUDA</div>
+            <p class="tagline">"Lost Today, Found Tomorrow."</p>
+            <p style="max-width: 600px; margin: 0 auto 30px auto; font-size: 1.1rem; color: #f0f4f8;">
+                “Tomorrow never comes, but today can be the day you find what you lost.”
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for("login_page") }}" class="btn btn-primary"><i class="fa-solid fa-circle-exclamation"></i> Report Lost Item</a>
+                <a href="{{ url_for("login_page") }}" class="btn btn-secondary"><i class="fa-solid fa-hand-holding-hand"></i> Report Found Item</a>
+            </div>
+        </div>
+    </section>
+
+    <div class="items-indicator-bar">
+        <div class="container icon-wrapper">
+            <div class="icon-item"><i class="fa-solid fa-wallet"></i>Wallets</div>
+            <div class="icon-item"><i class="fa-solid fa-mobile-screen-button"></i>Smartphones</div>
+            <div class="icon-item"><i class="fa-solid fa-key"></i>Keys</div>
+            <div class="icon-item"><i class="fa-solid fa-book"></i>Notebooks / Books</div>
+            <div class="icon-item"><i class="fa-solid fa-bottle-water"></i>Bottles</div>
+            <div class="icon-item"><i class="fa-solid fa-bag-shopping"></i>Bags</div>
+        </div>
+    </div>
+
+    <section class="container search-section" id="search">
+        <div class="search-container">
+            <h2><i class="fa-solid fa-filter" style="color: var(--secondary-gold);"></i> Instant Search & Filters</h2>
+            <form id="homeSearchForm">
+                <div class="search-grid">
+                    <div class="form-group">
+                        <input type="text" id="searchQuery" name="q" placeholder="What are you searching for? (e.g. Identity Card)">
+                    </div>
+                    <div class="form-group">
+                        <select id="searchCategory" name="category">
+                            <option value="">Select Category</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Cards">Documents & Cards</option>
+                            <option value="Stationery">Books & Stationery</option>
+                            <option value="Personal">Personal Belongings</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Textbooks">Textbooks</option>
+                            <option value="Jewelry">Jewelry</option>
+                            <option value="Sports">Sports Equipment</option>
+                            <option value="Tools">Tools</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="searchLocation" name="location" placeholder="Last Seen / Found Location">
+                    </div>
+                    <div class="form-group">
+                        <input type="date" id="searchType" name="type" placeholder="Date" value="Date">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fa-solid fa-magnifying-glass"></i> Filter Database Records
+                </button>
+            </form>
+            <div id="searchResults" style="margin-top: 20px;"></div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="container stats-grid">
+            <div class="stat-card">
+                <i class="fa-solid fa-file-circle-exclamation"></i>
+                <div class="stat-number" id="overviewLostCount">0</div>
+                <div class="stat-label">Total Lost Items</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-box-open"></i>
+                <div class="stat-number" id="overviewFoundCount">0</div>
+                <div class="stat-label">Total Found Items</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-hourglass-half"></i>
+                <div class="stat-number" id="overviewPendingClaims">0</div>
+                <div class="stat-label">Pending Claims</div>
+            </div>
+            <div class="stat-card">
+                <i class="fa-solid fa-circle-check"></i>
+                <div class="stat-number" id="overviewResolvedCases">0</div>
+                <div class="stat-label">Resolved Cases</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container" id="recent">
+        <h2 class="section-title">Recent <span>Feed Activity</span></h2>
+        <div class="recent-grid">
+            
+            <div class="item-card">
+                <div class="item-img-container">
+                    <span class="item-badge badge-lost">Lost</span>
+                    <i class="fa-solid fa-book-bookmark"></i>
+                </div>
+                <div class="item-details">
+                    <h3>Black Leather Journal</h3>
+                    <div class="item-meta">
+                        <div><i class="fa-solid fa-location-dot"></i></div>
+                        <div>Room 02</div>
+                        <div><i class="fa-solid fa-calendar-days"></i></div>
+                        <div>June 25, 2026</div>
+                    </div>
+                    <a href="#" class="btn-view">View Details & Claim</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-img-container">
+                    <span class="item-badge badge-found">Found</span>
+                    <i class="fa-solid fa-key"></i>
+                </div>
+                <div class="item-details">
+                    <h3>Bunch of Keys with Blue Keychain</h3>
+                    <div class="item-meta">
+                        <div><i class="fa-solid fa-location-dot"></i></div>
+                        <div>College Library</div>
+                        <div><i class="fa-solid fa-calendar-days"></i></div>
+                        <div>June 26, 2026</div>
+                    </div>
+                    <a href="#" class="btn-view">View Details & Verify</a>
+                </div>
+            </div>
+
+            <div class="item-card">
+                <div class="item-img-container">
+                    <span class="item-badge badge-found">Found</span>
+                    <i class="fa-solid fa-mobile-button"></i>
+                </div>
+                <div class="item-details">
+                    <h3>Samsung Galaxy Smartphone</h3>
+                    <div class="item-meta">
+                        <div><i class="fa-solid fa-location-dot"></i></div>
+                        <div>Student Canteen</div>
+                        <div><i class="fa-solid fa-calendar-days"></i></div>
+                        <div>June 27, 2026</div>
+                    </div>
+                    <a href="#" class="btn-view">View Details & Verify</a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <h3>Project GUMSHUDA</h3>
+                <p>“Tomorrow never comes, but today can be the day you find what you lost.”</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Navigation</h3>
+                <ul>
+                    <li><a href="#">Reporting Dashboard</a></li>
+                    <li><a href="../images/Project_गुमशुदा_T&C.pdf">Terms & Conditions</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h3>Campus Hub Info</h3>
+                <p style="color: #ccc; margin-bottom: 8px;"><i class="fa-solid fa-building-columns" style="color: var(--secondary-gold);"></i> SIES College Lost & Found Hub Office</p>
+                <p style="color: #ccc;"><i class="fa-solid fa-envelope" style="color: var(--secondary-gold);"></i> support.gumshuda@sies.edu.in</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026-2027 GUMSHUDA Lost & Found Hub . All Rights Reserved.
+        </div>
+    </footer>
+
+</body>
+</html>

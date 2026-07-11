@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard | GUMSHUDA Portal</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Design Guidelines Color Palette Variables */
+        :root {
+            --primary-navy: #001F4D;
+            --secondary-gold: #C9A44C;
+            --bg-ivory: #FCFCFA;
+            --text-navy: #0A2342;
+            --accent-gold: #D8B56A;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --font-hindi: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-ivory);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation Bar Header */
+        header {
+            background-color: var(--primary-navy);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo-circle {
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            overflow: hidden;
+        }
+
+        .brand-logo-circle img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+
+        .brand-text h1 span {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .brand-text p {
+            font-size: 0.7rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+
+        .user-profile-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: white;
+        }
+
+        .user-info p {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .user-info span {
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            border: 1px solid var(--secondary-gold);
+            color: var(--secondary-gold);
+            padding: 6px 14px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout:hover {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+        }
+
+        /* Dashboard Workspace Layout */
+        .dashboard-wrapper {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+            flex: 1;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 30px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            border-top: 4px solid var(--secondary-gold);
+            height: fit-content;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            color: var(--text-navy);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu a.active-link {
+            background-color: var(--primary-navy);
+            color: white;
+        }
+
+        .sidebar-menu a:hover i,
+        .sidebar-menu a.active-link i {
+            color: var(--accent-gold);
+        }
+
+        .sidebar-menu i {
+            color: var(--secondary-gold);
+            width: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* Core Content Workspace */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .workspace-panel,
+        .dashboard-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            display: none;
+        }
+
+        .workspace-panel.active-pane,
+        .dashboard-section.active-pane {
+            display: block;
+        }
+
+        .workspace-panel h2 {
+            font-size: 1.3rem;
+            color: var(--primary-navy);
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        /* Overview Summary Counters Cards Grid */
+        .metrics-summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+            border-left: 4px solid var(--primary-navy);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .metric-card.gold-border {
+            border-left-color: var(--secondary-gold);
+        }
+
+        .metric-info h4 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #777;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-info p {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            color: var(--text-navy);
+        }
+
+        .metric-card i {
+            font-size: 2rem;
+            color: rgba(0, 31, 77, 0.1);
+        }
+
+        /* Match Alert Notification Box */
+        .alert-notification-box {
+            background-color: rgba(201, 164, 76, 0.08);
+            border-left: 4px solid var(--secondary-gold);
+            padding: 15px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* Search Filter Module Layout */
+        .search-filter-box {
+            background-color: rgba(0, 31, 77, 0.02);
+            border: 1px solid rgba(201, 164, 76, 0.3);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 25px;
+        }
+
+        .search-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+        }
+
+        /* Form Controls styling */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            font-family: var(--font-body);
+        }
+
+        /* Found Items Record Catalog */
+        .items-results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .found-item-card {
+            border: 1px solid #eee;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: white;
+        }
+
+        .card-img-placeholder {
+            height: 140px;
+            background-color: #f7f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ccc;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .card-img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-body {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .card-body h3 {
+            font-size: 1.1rem;
+            color: var(--primary-navy);
+            margin-bottom: 8px;
+        }
+
+        .card-meta {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .card-meta p {
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .card-meta i {
+            color: var(--secondary-gold);
+        }
+
+        /* Buttons Architecture */
+        .btn-action {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn-action:hover {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+        }
+
+        .btn-claim {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+            width: 100%;
+        }
+
+        .btn-claim:hover {
+            background-color: var(--primary-navy);
+            color: white;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--primary-navy), #123b74);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(0, 31, 77, 0.18);
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, var(--secondary-gold), #d7ac41);
+            color: var(--primary-navy);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(201, 164, 76, 0.25);
+        }
+
+        .refresh-btn i {
+            font-size: 0.95rem;
+        }
+
+        /* Table Components */
+        .data-table-container {
+            overflow-x: auto;
+        }
+
+        .claims-controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 20px;
+            align-items: flex-end;
+        }
+
+        .claims-controls .form-group {
+            flex: 1 1 220px;
+        }
+
+        .claims-controls label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .claims-controls select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: var(--font-body);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--primary-navy);
+            color: white;
+            padding: 12px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background-color: #f0ad4e;
+            color: white;
+        }
+
+        .status-approved {
+            background-color: #5cb85c;
+            color: white;
+        }
+
+        .status-rejected {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+        }
+
+        /* Modal Overlay Framework */
+        .claim-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 31, 77, 0.5);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border-top: 4px solid var(--secondary-gold);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, .08);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .result-body {
+            padding: 20px;
+        }
+
+        .result-body h3 {
+            color: #001F4D;
+            margin-bottom: 10px;
+        }
+
+        .result-body p {
+            margin: 6px 0;
+        }
+
+        .result-body small {
+            color: #777;
+        }
+
+        .result-footer {
+            margin-top: 15px;
+        }
+
+        footer {
+            background-color: var(--primary-navy);
+            color: #aaa;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.75rem;
+            border-top: 3px solid var(--secondary-gold);
+            margin-top: auto;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+        <div class="navbar">
+            <a href="{{ url_for('home') }}" class="brand">
+                <div class="brand-logo-circle">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}">
+                </div>
+                <div class="brand-text">
+                    <h1><span>गुमशुदा</span> GUMSHUDA</h1>
+                    <p>Student Dashboard</p>
+                </div>
+            </a>
+            <div class="user-profile-menu">
+                <div class="user-info">
+                    <p>{{ user.name }}</p>
+                    <span>{{ user.roll_number }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="btn-logout">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ================= MAIN ================= -->
+    <div class="dashboard-wrapper">
+        <!-- Sidebar -->
+        <aside class="sidebar-nav">
+            <ul class="sidebar-menu">
+                <li>
+                    <a id="link-overview" class="active-link" onclick="showPanel('overview')">
+                        <i class="fa-solid fa-chart-line"></i>
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a id="link-search" onclick="showPanel('search')">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Search Items
+                    </a>
+                </li>
+                <li>
+                    <a id="link-lost" onclick="showPanel('lost')">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        Report Lost
+                    </a>
+                </li>
+                <li>
+                    <a id="link-found" onclick="showPanel('found')">
+                        <i class="fa-solid fa-box-open"></i>
+                        Report Found
+                    </a>
+                </li>
+                <li>
+                    <a id="link-claims" onclick="showPanel('claims')">
+                        <i class="fa-solid fa-file"></i>
+                        My Claims
+                    </a>
+                </li>
+                <li>
+                    <a id="link-reports" onclick="showPanel('reports')">
+                        <i class="fa-solid fa-list"></i>
+                        My Reports
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <!-- Overview -->
+            <!-- ================= OVERVIEW PANEL ================= -->
+            <div id="overviewPanel" class="workspace-panel active-pane">
+                <h2>
+                    <i class="fa-solid fa-chart-pie"></i>
+                    Dashboard Overview
+                </h2>
+                <!-- Statistics -->
+                <div class="metrics-summary-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Lost Reports</h4>
+                            <p id="lostCount">0</p>
+                        </div>
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Found Reports</h4>
+                            <p id="foundCount">0</p>
+                        </div>
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+                    <div class="metric-card gold-border">
+                        <div class="metric-info">
+                            <h4>Claims Submitted</h4>
+                            <p id="claimCount">0</p>
+                        </div>
+                        <i class="fa-solid fa-file-circle-check"></i>
+                    </div>
+                </div>
+                <!-- Welcome -->
+                <div class="alert-notification-box">
+                    <h3>
+                        Welcome,
+                        {{ user.name }}
+                    </h3>
+                    <p>
+                        Roll Number :
+                        <strong>{{ user.roll_number }}</strong>
+                    </p>
+                    <p>
+                        Department :
+                        <strong>{{ user.department }}</strong>
+                    </p>
+                </div>
+                <!-- Recent Activity -->
+                <h3 style="margin-bottom:15px;">
+                    Recent Activity
+                </h3>
+                <div class="data-table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Activity</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recentActivityBody">
+                            <tr>
+                                <td colspan="3">
+                                    Loading...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <!-- ================= SEARCH PANEL ================= -->
+            <div id="searchPanel" class="workspace-panel">
+                <h2>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Search Found Items
+                </h2>
+                <!-- Search Filters -->
+                <div class="search-filter-box">
+                    <div class="search-grid">
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" id="searchName" placeholder="Search item...">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="searchCategory">
+                                <option value="">All Categories</option>
+                                <option>Electronics</option>
+                                <option>Cards</option>
+                                <option>Stationery</option>
+                                <option>Personal</option>
+                                <option>Accessories</option>
+                                <option>Textbooks</option>
+                                <option>Jewelry</option>
+                                <option>Sports</option>
+                                <option>Tools</option>
+                            </select>
+                        </div>
+                    </div>
+                    <br>
+                    <button class="btn-action" onclick="searchItems()">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        Search
+                    </button>
+                    <button class="btn-action" style="background:#777;margin-left:10px;" onclick="loadAllItems()">
+                        View All
+                    </button>
+                </div>
+                <!-- Results -->
+                <div class="items-results-grid" id="itemsContainer">
+                </div>
+            </div>
+
+            <!-- Lost -->
+            <!-- ================= LOST ITEM PANEL ================= -->
+            <div id="lostPanel" class="workspace-panel">
+                <h2>
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    Report Lost Item
+                </h2>
+                <form id="lostReportForm" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" name="item_name" required placeholder="Example: Wallet">
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="category" required>
+                                <option value="">Choose Category</option>
+                                <option>Electronics</option>
+                                <option>Cards</option>
+                                <option>Stationery</option>
+                                <option>Personal</option>
+                                <option>Accessories</option>
+                                <option>Textbooks</option>
+                                <option>Jewelry</option>
+                                <option>Sports</option>
+                                <option>Tools</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Lost Location</label>
+                            <input type="text" name="location" required placeholder="Example: Library">
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Image</label>
+                            <input type="file" name="item_image" accept="image/*">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea rows="5" name="description" required placeholder="Describe your item clearly...">
+                </textarea>
+                        </div>
+                    </div>
+                    <button class="btn-action" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Lost Report
+                    </button>
+                </form>
+            </div>
+
+            <!-- Found -->
+            <!-- ================= FOUND ITEM PANEL ================= -->
+            <div id="foundPanel" class="workspace-panel">
+                <h2>
+                    <i class="fa-solid fa-box-open"></i>
+                    Report Found Item
+                </h2>
+                <form id="foundReportForm" enctype="multipart/form-data">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Item Name</label>
+                            <input type="text" name="item_name" placeholder="Example: Laptop Charger" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select name="category" required>
+                                <option value="">Choose Category</option>
+                                <option>Electronics</option>
+                                <option>Cards</option>
+                                <option>Stationery</option>
+                                <option>Personal</option>
+                                <option>Accessories</option>
+                                <option>Textbooks</option>
+                                <option>Jewelry</option>
+                                <option>Sports</option>
+                                <option>Tools</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Found Location</label>
+                            <input type="text" name="location" placeholder="Example: Computer Lab" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Upload Image</label>
+                            <input type="file" name="item_image" accept="image/*">
+                        </div>
+                        <div class="form-group full-width">
+                            <label>Description</label>
+                            <textarea rows="5" name="description" placeholder="Describe the found item" required>
+                </textarea>
+                        </div>
+                    </div>
+                    <button class="btn-action" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        Submit Found Report
+                    </button>
+                </form>
+            </div>
+
+            <!-- Claims -->
+            <!-- ===================== CLAIMS PANEL ===================== -->
+
+            <div class="dashboard-section" id="claimsPanel">
+
+                <div class="section-header">
+                    <h2>
+                        <i class="fa-solid fa-file-signature"></i>
+                        My Claims
+                    </h2>
+
+                    <button class="refresh-btn" onclick="loadMyClaims()">
+                        <i class="fa-solid fa-rotate"></i>
+                        Refresh
+                    </button>
+                </div>
+
+                <div class="table-container">
+
+                    <table class="dashboard-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Owner</th>
+                                <th>Claim Date</th>
+                                <th>Status</th>
+                                <th>Pickup Code</th>
+                                <th>Message</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="claimsTableBody">
+
+                            <tr>
+
+                                <td colspan="8" class="empty-message">
+                                    Loading your claims...
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- Reports -->
+            <!-- ===================== REPORTS PANEL ===================== -->
+
+            <div class="dashboard-section" id="reportsPanel">
+
+                <div class="section-header">
+
+                    <h2>
+                        <i class="fa-solid fa-folder-open"></i>
+                        My Reports
+                    </h2>
+
+                    <button class="refresh-btn" onclick="loadMyReports()">
+                        <i class="fa-solid fa-rotate"></i>
+                        Refresh
+                    </button>
+
+                </div>
+
+                <div class="table-container">
+
+                    <table class="dashboard-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>#</th>
+                                <th>Type</th>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Deposit Code</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="reportsTableBody">
+
+                            <tr>
+
+                                <td colspan="8" class="empty-message">
+
+                                    Loading reports...
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </main>
+    </div>
+    <!-- Claim Modal -->
+    <div id="claimModal" class="claim-modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeClaimModal()">
+                &times;
+            </span>
+            <h3>Claim Item</h3>
+            <form id="claimForm" enctype="multipart/form-data">
+                <input type="hidden" id="claimItemId" name="item_id">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="claim_reason" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Proof</label>
+                    <input type="file" name="proof_document" required>
+                </div>
+                <button class="btn-action" type="submit">
+                    Submit Claim
+                </button>
+            </form>
+        </div>
+    </div>
+    <footer>
+        © 2026 GUMSHUDA
+    </footer>
+
+    <script>
+        // =============================
+        // TAB SWITCHING
+        // =============================
+        function showPanel(tab) {
+            // Hide all panels
+            document.querySelectorAll(".workspace-panel, .dashboard-section")
+                .forEach(panel => panel.classList.remove("active-pane"));
+
+            // Remove active class from all sidebar links
+            document.querySelectorAll(".sidebar-menu a")
+                .forEach(link => link.classList.remove("active-link"));
+
+            // Show the targeted panel (e.g., "overview" + "Panel" = "overviewPanel")
+            const targetPanel = document.getElementById(tab + "Panel");
+            if (targetPanel) {
+                targetPanel.classList.add("active-pane");
+            }
+
+            // Add active class to the targeted sidebar link
+            const targetLink = document.getElementById("link-" + tab);
+            if (targetLink) {
+                targetLink.classList.add("active-link");
+            }
+        }
+
+        showPanel("overview");
+
+        // ================================
+        // LOAD DASHBOARD COUNTS
+        // ================================
+        async function loadDashboardData() {
+            try {
+                const response = await fetch("/api/my-activity");
+                const data = await response.json();
+                document.getElementById("lostCount").innerText =
+                    data.lost_count || 0;
+
+                document.getElementById("foundCount").innerText =
+                    data.found_count || 0;
+
+                document.getElementById("claimCount").innerText =
+                    data.claim_count || 0;
+
+                loadRecentActivity(data.activity || []);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        // ================================
+        // LOAD RECENT ACTIVITY TABLE
+        // ================================
+        function loadRecentActivity(activity) {
+            const tbody = document.getElementById("recentActivityBody");
+            tbody.innerHTML = "";
+
+            if (!activity.length) {
+                tbody.innerHTML += `
+        <tr>
+            <td colspan="3" class="empty-message">No recent activity yet.</td>
+        </tr>
+        `;
+                return;
+            }
+
+            activity.forEach(item => {
+                tbody.innerHTML += `
+        <tr>
+            <td>${item.type}: ${item.item_name}</td>
+            <td>${item.date}</td>
+            <td>
+                <span class="status ${item.status.toLowerCase()}">
+                    ${item.status}
+                </span>
+            </td>
+        </tr>
+        `;
+            });
+        }
+
+        // ================================
+        // LOAD CLAIMS
+        // ================================
+        async function loadMyClaims() {
+
+            try {
+
+                const response = await fetch("/api/my-claims");
+
+                const data = await response.json();
+
+                const tbody = document.getElementById("claimsTableBody");
+
+                tbody.innerHTML = "";
+
+                if (data.length === 0) {
+
+                    tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="empty-message">
+                        No claims submitted yet.
+                    </td>
+                </tr>
+            `;
+
+                    return;
+                }
+
+                data.forEach((claim, index) => {
+
+                    tbody.innerHTML += `
+
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>${claim.item_name}</td>
+
+                <td>${claim.category}</td>
+
+                <td>${claim.owner}</td>
+
+                <td>${claim.date}</td>
+
+                <td>
+                    <span class="status ${claim.status.toLowerCase()}">
+                        ${claim.status}
+                    </span>
+                </td>
+
+                <td>${claim.pickup_code || "-"}</td>
+
+                <td>
+                    ${claim.message}
+                    ${claim.instruction ? `<br><strong>${claim.instruction}</strong>` : ""}
+                </td>
+
+            </tr>
+
+            `;
+
+                });
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+            }
+
+        }
+
+        document.addEventListener("DOMContentLoaded", loadMyClaims);
+
+        // ================================
+        // SEARCH FOUND ITEMS
+        // ================================
+        async function loadSearchResults(showAll = false) {
+            let q = document.getElementById("searchName").value.trim();
+            let category = document.getElementById("searchCategory").value;
+            let url = "/api/search/assets?type=found";
+            if (!showAll) {
+                if (q != "")
+                    url += "&q=" + encodeURIComponent(q);
+                if (category != "")
+                    url += "&category=" + encodeURIComponent(category);
+            }
+            const response = await fetch(url);
+            const items = await response.json();
+            const grid = document.getElementById("itemsContainer");
+            grid.innerHTML = "";
+
+            if (!items.length) {
+                grid.innerHTML = `<p class="empty-message">No found items matched your search.</p>`;
+                return;
+            }
+
+            items.forEach(item => {
+                grid.innerHTML += `
+        <div class="found-item-card">
+            <div class="card-img-placeholder">
+                ${item.image ? `<img src="/static/uploads/${item.image}" alt="${item.item_name}">` : `<i class="fa-solid fa-box"></i>`}
+            </div>
+            <div class="card-body">
+                <h3>${item.item_name}</h3>
+                <div class="card-meta">
+                    <p>
+                        <i class="fa-solid fa-tag"></i>
+                        ${item.category}
+                    </p>
+                    <p>
+                        <i class="fa-solid fa-location-dot"></i>
+                        ${item.location}
+                    </p>
+                </div>
+                <p>${item.description}</p>
+            </div>
+            <div style="padding:15px">
+                <button
+                    class="btn-action btn-claim"
+                    onclick='openClaimForm(${JSON.stringify(item.item_name)}, ${item.id})'>
+                    Claim Item
+                </button>
+            </div>
+        </div>
+        `;
+            });
+        }
+
+        function searchItems() {
+            loadSearchResults(false);
+        }
+
+        function loadAllItems() {
+            document.getElementById("searchName").value = "";
+            document.getElementById("searchCategory").value = "";
+            loadSearchResults(true);
+        }
+
+        function openClaimForm(itemName, itemId) {
+            document.getElementById("claimItemId").value = itemId;
+            document.querySelector("#claimModal h3").innerText = `Claim Item: ${itemName}`;
+            document.getElementById("claimModal").style.display = "flex";
+        }
+
+        function closeClaimForm() {
+            document.getElementById("claimForm").reset();
+            document.getElementById("claimModal").style.display = "none";
+        }
+
+        function closeClaimModal() {
+            closeClaimForm();
+        }
+
+        // ================================
+        // CLAIM FORM
+        // ================================
+
+        document.getElementById("claimForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("/api/claims/submit", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (data.success) {
+                closeClaimForm();
+                loadDashboardData();
+            }
+        });
+        // ================================
+        // LOST REPORT
+        // ================================
+
+        document.getElementById("lostReportForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("/api/reports/lost", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (data.success) {
+                this.reset();
+                loadDashboardData();
+            }
+        });
+        // ================================
+        // FOUND REPORT
+        // ================================
+
+        document.getElementById("foundReportForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const response = await fetch("/api/reports/found", {
+                method: "POST",
+                body: formData
+            });
+            const data = await response.json();
+            alert(data.message);
+            if (data.success) {
+                this.reset();
+                loadDashboardData();
+            }
+        });
+
+        // ================================
+        // PAGE LOAD
+        // ================================
+        window.onload = function () {
+            loadDashboardData();
+            loadSearchResults(true);
+        };
+
+
+        // ================================
+        // LOAD REPORTS
+        // ================================
+        async function loadMyReports() {
+
+            try {
+
+                const response = await fetch("/api/my-reports");
+
+                const reports = await response.json();
+
+                const tbody = document.getElementById("reportsTableBody");
+
+                tbody.innerHTML = "";
+
+                if (reports.length === 0) {
+
+                    tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="empty-message">
+                    No reports available.
+                </td>
+            </tr>
+            `;
+
+                    return;
+                }
+
+                reports.forEach((report, index) => {
+
+                    tbody.innerHTML += `
+
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>
+                    <span class="report-type ${report.type.toLowerCase()}">
+                        ${report.type}
+                    </span>
+                </td>
+
+                <td>${report.item_name}</td>
+
+                <td>${report.category}</td>
+
+                <td>${report.location}</td>
+
+                <td>${report.date}</td>
+
+                <td>
+
+                    <span class="status ${report.status.toLowerCase()}">
+                        ${report.status}
+                    </span>
+
+                </td>
+
+                <td>
+                    ${report.type === "Found" && report.deposit_code ? report.deposit_code : "-"}
+                    ${report.type === "Found" && report.status === "Pending Deposit" ? "<br><strong>Deposit this item at the hub and share this code with admin.</strong>" : ""}
+                </td>
+
+            </tr>
+
+            `;
+
+                });
+
+            }
+
+            catch (error) {
+
+                console.log(error);
+
+            }
+
+        }
+        document.addEventListener("DOMContentLoaded", loadMyReports);
+    </script>
+</body>

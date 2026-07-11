@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | GUMSHUDA Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Design Guidelines Color Palette Variables */
+        :root {
+            --primary-navy: #001F4D;
+            --secondary-gold: #C9A44C;
+            --bg-ivory: #FCFCFA;
+            --text-navy: #0A2342;
+            --accent-gold: #D8B56A;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --font-hindi: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-ivory);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header Navigation Styles */
+        header {
+            background-color: var(--primary-navy);
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo-circle {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+        }
+
+        .brand-logo-circle img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .brand-text h1 span {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .brand-text p {
+            font-size: 0.7rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-back-home {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back-home:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Container & Auth Form Structure */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background-color: white;
+            width: 100%;
+            max-width: 450px;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 31, 77, 0.08);
+            border-top: 4px solid var(--secondary-gold);
+        }
+
+        /* Form Alternation Toggle Tab Header */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: all 0.3s;
+        }
+
+        .tab.active-tab {
+            color: var(--primary-navy);
+            border-bottom: 3px solid var(--secondary-gold);
+        }
+
+        /* Input Element Fields styling */
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active-form {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-navy);
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .input-icon-wrapper input {
+            width: 100%;
+            padding: 12px 14px 12px 40px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--text-navy);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-icon-wrapper input:focus {
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(0, 31, 77, 0.1);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-navy);
+        }
+
+        /* Extra Actions Utilities */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .form-options a:hover {
+            color: var(--secondary-gold);
+        }
+
+        /* Action Buttons */
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-navy);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+        }
+
+        .btn-secondary-link {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .create-account-note {
+            margin-top: 16px;
+            font-size: 0.9rem;
+            color: #33415C;
+            text-align: center;
+        }
+
+        .create-account-note a {
+            color: var(--primary-navy);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 6px;
+        }
+
+        .create-account-note a:hover {
+            color: var(--secondary-gold);
+        }
+
+        /* Subtle Bottom Footer Info */
+        footer {
+            background-color: var(--primary-navy);
+            color: #aaa;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.75rem;
+            border-top: 3px solid var(--secondary-gold);
+        }
+
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <a href="{{ url_for('home') }}" class="brand">
+                <div class="brand-logo-circle">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GUMSHUDA Logo">
+                </div>
+                <div class="brand-text">
+                    <h1><span>गुमशुदा</span> GUMSHUDA</h1>
+                    <p>SIES College Portal</p>
+                </div>
+            </a>
+            <a href="{{ url_for('home') }}" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        </div>
+    </header>
+
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            
+            <div class="auth-tabs">
+                <div class="tab active-tab">Login</div>
+            </div>
+
+            <div class="form-section active-form" id="loginFormSection">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="loginEmail" name="email" placeholder="username@gmail.com" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="loginPassword" name="password" placeholder="••••••••" required>
+                            <button type="button" class="password-toggle" onclick="toggleLoginPasswordVisibility()" aria-label="Show password">
+                                <i id="loginPasswordToggleIcon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-options">
+                        <label><input type="checkbox" name="remember_me"> Remember Me</label>
+                        <a href="#">Forgot Password?</a>
+                    </div>
+
+                    <div id="loginMessage" style="margin-bottom: 12px; font-size: 0.9rem;"></div>
+
+                    <button type="submit" class="btn-submit">
+                        <i class="fa-solid fa-right-to-bracket"></i> Secure Login
+                    </button>
+                        <a href="{{ url_for('register_page') }}" class="btn-secondary-link">Don't have an account? Register here</a>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026-2027 GUMSHUDA Lost & Found Hub | SIES College Identity Management System.
+    </footer>
+
+    <script>
+        document.getElementById('loginForm')?.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const messageBox = document.getElementById('loginMessage');
+            messageBox.textContent = 'Signing in...';
+            messageBox.style.color = '#001F4D';
+
+            const response = await fetch('/api/login', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                messageBox.textContent = data.message || 'Login successful';
+                messageBox.style.color = '#10b981';
+                window.location.href = data.redirect || '/dashboard';
+            } else {
+                const errorMessage = data.message || data.error || 'Login failed';
+                messageBox.textContent = errorMessage;
+                messageBox.style.color = '#ef4444';
+                alert(errorMessage);
+            }
+        });
+
+        function toggleLoginPasswordVisibility() {
+            const passwordInput = document.getElementById('loginPassword');
+            const toggleIcon = document.getElementById('loginPasswordToggleIcon');
+            const isPassword = passwordInput.type === 'password';
+
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | GUMSHUDA Portal</title>
+    <!-- Google Fonts mapped to official Project Guidelines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons for input identification -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Design Guidelines Color Palette Variables */
+        :root {
+            --primary-navy: #001F4D;
+            --secondary-gold: #C9A44C;
+            --bg-ivory: #FCFCFA;
+            --text-navy: #0A2342;
+            --accent-gold: #D8B56A;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --font-hindi: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-ivory);
+            color: var(--text-navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Header Navigation Styles */
+        header {
+            background-color: var(--primary-navy);
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .brand-logo-circle {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--secondary-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+        }
+
+        .brand-logo-circle img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+        }
+
+        .brand-text h1 {
+            font-size: 1.2rem;
+            font-family: var(--font-heading);
+        }
+        
+        .brand-text h1 span {
+            font-family: var(--font-hindi);
+            color: var(--secondary-gold);
+        }
+
+        .brand-text p {
+            font-size: 0.7rem;
+            color: var(--accent-gold);
+            text-transform: uppercase;
+        }
+
+        .btn-back-home {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-back-home:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Container Frame Layout */
+        .auth-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background-color: white;
+            width: 100%;
+            max-width: 500px;
+            padding: 35px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 31, 77, 0.08);
+            border-top: 4px solid var(--secondary-gold);
+        }
+
+        .auth-container h2 {
+            font-family: var(--font-heading);
+            color: var(--primary-navy);
+            font-size: 1.4rem;
+            margin-bottom: 5px;
+        }
+
+        .auth-container p.subtitle {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        /* Form Wizard Steps Presentation */
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active-panel {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-navy);
+        }
+
+        .input-icon-wrapper {
+            position: relative;
+        }
+
+        .input-icon-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            font-size: 0.95rem;
+        }
+
+        .input-icon-wrapper input, .input-icon-wrapper select {
+            width: 100%;
+            padding: 12px 44px 12px 40px;
+            border: 1px solid #dcdcdc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            color: var(--text-navy);
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .input-icon-wrapper select {
+            appearance: none;
+            background-color: white;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: #888;
+            cursor: pointer;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 28px;
+            height: 28px;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-navy);
+        }
+
+        .input-icon-wrapper input:focus, .input-icon-wrapper select:focus {
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(0, 31, 77, 0.1);
+        }
+
+        .password-strength {
+            margin-top: 10px;
+        }
+
+        .strength-bar {
+            width: 100%;
+            height: 8px;
+            border-radius: 999px;
+            background-color: #e5e7eb;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .strength-bar span {
+            display: block;
+            width: 0%;
+            height: 100%;
+            border-radius: 999px;
+            background-color: var(--secondary-gold);
+            transition: width 0.25s ease, background-color 0.25s ease;
+        }
+
+        .strength-text {
+            font-size: 0.85rem;
+            color: #33415C;
+        }
+
+        /* OTP Block Structure Elements */
+        .otp-verification-box {
+            background-color: rgba(201, 164, 76, 0.08);
+            border: 1px dashed var(--secondary-gold);
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+        }
+
+        .otp-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-navy);
+        }
+
+        .otp-inputs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 15px 0;
+        }
+
+        .otp-field {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: 1px solid #c9a44c;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .otp-field:focus {
+            border-color: var(--primary-navy);
+            box-shadow: 0 0 0 3px rgba(0, 31, 77, 0.15);
+        }
+
+        .resend-text {
+            font-size: 0.8rem;
+            text-align: right;
+            color: #666;
+        }
+
+        .resend-text a {
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Action Buttons styling */
+        .btn-action {
+            width: 100%;
+            padding: 13px;
+            background-color: var(--primary-navy);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-action:hover {
+            background-color: var(--secondary-gold);
+            color: var(--primary-navy);
+        }
+
+        .btn-secondary-link {
+            text-align: center;
+            display: block;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            color: var(--primary-navy);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* Subtle Bottom Footer Info */
+        footer {
+            background-color: var(--primary-navy);
+            color: #aaa;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 0.75rem;
+            border-top: 3px solid var(--secondary-gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navbar Component Mapping -->
+    <header>
+        <div class="navbar">
+            <a href="#" class="brand">
+                <div class="brand-logo-circle">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="GUMSHUDA Logo">
+                </div>
+                <div class="brand-text">
+                    <h1><span>गुमशुदा</span> GUMSHUDA</h1>
+                    <p>SIES College Portal</p>
+                </div>
+            </a>
+            <a href="{{ url_for('home') }}" class="btn-back-home"><i class="fa-solid fa-arrow-left"></i> Home</a>
+        </div>
+    </header>
+
+    <!-- Content Block Wrapper -->
+    <div class="auth-wrapper">
+        <div class="auth-container">
+            
+            <form id="registrationForm" method="POST">
+                <div class="step-panel active-panel" id="step1">
+                    <h2>Create Student Account</h2>
+                    <p class="subtitle">Please enter your academic details to sign up.</p>
+
+                    <div class="form-group">
+                        <label for="regName">Full Name</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="regName" name="name" placeholder="Full Name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="regClass">Class / Stream</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                                <select id="regClass" name="department" required>
+                                    <option value="">Select</option>
+                                    <option value="FYBSc-IT">FYBSc IT</option>
+                                    <option value="SYBSc-IT">SYBSc IT</option>
+                                    <option value="TYBSc-IT">TYBSc IT</option>
+                                    <option value="FYCS">FYBSc AI</option>
+                                    <option value="SYCS">SYBSc AI</option>
+                                    <option value="Other">Other Faculty</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="regRoll">Roll Number</label>
+                            <div class="input-icon-wrapper">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input type="text" id="regRoll" name="roll_number" placeholder="Roll Number" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regMobile">Mobile Number</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-phone"></i>
+                            <input type="tel" id="regMobile" name="phone" placeholder="Mobile Number" pattern="[0-9]{10}" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regEmail">Email Address</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="regEmail" name="email" placeholder="username@gmail.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="regPassword">Account Password</label>
+                        <div class="input-icon-wrapper">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="regPassword" name="password" placeholder="Create complex password" required oninput="updatePasswordStrength(this.value)">
+                            <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" aria-label="Show password">
+                                <i id="passwordToggleIcon" class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <p class="strength-text" id="passwordStrengthText">Password strength: Enter a password</p>
+                            <div class="strength-bar"><span id="strengthBar"></span></div>
+                        </div>
+                    </div>
+
+                    <div id="registerMessage" style="margin-bottom: 12px; font-size: 0.9rem;"></div>
+
+                    <button type="submit" class="btn-action">
+                        Create Account <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                    <a href="{{ url_for('login_page') }}" class="btn-secondary-link">Already registered? Login here</a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- Page Footer -->
+    <footer>
+        &copy; 2026-2027 GUMSHUDA Lost & Found Hub | SIES College Identity Management System.
+    </footer>
+
+    <!-- Interactive Component Workflow Engine Logic Execution Script -->
+    <script>
+        document.getElementById('registrationForm')?.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const form = event.currentTarget;
+            const messageBox = document.getElementById('registerMessage');
+            messageBox.textContent = 'Creating account...';
+            messageBox.style.color = '#001F4D';
+
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                messageBox.textContent = data.message || 'Account created successfully';
+                messageBox.style.color = '#10b981';
+
+                const loginFormData = new FormData();
+                loginFormData.append('email', document.getElementById('regEmail').value);
+                loginFormData.append('password', document.getElementById('regPassword').value);
+
+                const loginResponse = await fetch('/api/login', {
+                    method: 'POST',
+                    body: loginFormData
+                });
+                const loginData = await loginResponse.json();
+
+                if (loginResponse.ok) {
+                    window.location.href = loginData.redirect || '/dashboard';
+                } else {
+                    window.location.href = '/login';
+                }
+            } else {
+                messageBox.textContent = data.message || 'Registration failed';
+                messageBox.style.color = '#ef4444';
+            }
+        });
+
+        function updatePasswordStrength(password) {
+            const strengthBar = document.getElementById('strengthBar');
+            const strengthText = document.getElementById('passwordStrengthText');
+            let score = 0;
+
+            if (!password) {
+                strengthBar.style.width = '0%';
+                strengthBar.style.backgroundColor = 'var(--secondary-gold)';
+                strengthText.innerText = 'Enter a password';
+                return;
+            }
+
+            if (password.length >= 8) score++;
+            if (/[A-Z]/.test(password)) score++;
+            if (/[a-z]/.test(password)) score++;
+            if (/[0-9]/.test(password)) score++;
+            if (/[^A-Za-z0-9]/.test(password)) score++;
+
+            let strength = 'Weak';
+            let width = '25%';
+            let color = '#ef4444';
+
+            if (password.length < 8) {
+                strength = 'Too short';
+                width = '15%';
+                color = '#ef4444';
+            } else if (score === 2) {
+                strength = 'Fair';
+                width = '45%';
+                color = '#f59e0b';
+            } else if (score === 3) {
+                strength = 'Good';
+                width = '65%';
+                color = '#3b82f6';
+            } else if (score >= 4) {
+                strength = 'Strong';
+                width = '100%';
+                color = '#10b981';
+            }
+
+            strengthBar.style.width = width;
+            strengthBar.style.backgroundColor = color;
+            strengthText.innerText = strength;
+        }
+
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('regPassword');
+            const toggleIcon = document.getElementById('passwordToggleIcon');
+            const isPassword = passwordInput.type === 'password';
+
+            passwordInput.type = isPassword ? 'text' : 'password';
+            toggleIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+        }
+    </script>
+</body>
+</html>
